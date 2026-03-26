@@ -1,47 +1,117 @@
-import { useState } from "react";
+import type { GameFilters, RankingOption } from "../types/games";
 
-function SidePanel() {
-  let sidePanelItems = [
-    "Action",
-    "Action-adventure",
-    "Adventure",
-    "Puzzle",
-    "Role-playing",
-    "Simulation",
-    "Strategy",
-    "Sports",
-    "MMO",
-  ];
+type SidePanelProps = {
+  filters: GameFilters;
+  genreOptions: string[];
+  platformOptions: string[];
+  yearOptions: string[];
+  publisherOptions: string[];
+  onFilterChange: <K extends keyof GameFilters>(
+    key: K,
+    value: GameFilters[K],
+  ) => void;
+  onResetFilters: () => void;
+};
 
-  const [selectedIndex, setSelectedIndex] = useState(-1);
+const rankingOptions: { label: string; value: RankingOption }[] = [
+  { label: "Default order", value: "none" },
+  { label: "User Count", value: "userCount" },
+  { label: "Global Sales (millions)", value: "globalSales" },
+  { label: "Year Released", value: "yearRelease" },
+];
+
+function SidePanel({
+  filters,
+  genreOptions,
+  platformOptions,
+  yearOptions,
+  publisherOptions,
+  onFilterChange,
+  onResetFilters,
+}: SidePanelProps) {
+  const filterGroups = [
+    {
+      id: "genre",
+      label: "Genre",
+      options: genreOptions,
+      value: filters.genre,
+    },
+    {
+      id: "platform",
+      label: "Platform",
+      options: platformOptions,
+      value: filters.platform,
+    },
+    {
+      id: "year",
+      label: "Year Release",
+      options: yearOptions,
+      value: filters.year,
+    },
+    {
+      id: "publisher",
+      label: "Publisher",
+      options: publisherOptions,
+      value: filters.publisher,
+    },
+  ] as const;
 
   return (
-    <div className="container-fluid text-light">
-      <p className="display-6">Genre</p>
-      <ul>
-        {sidePanelItems.map((item, index) => (
-          <li
-            key={item}
-            className={
-              selectedIndex === index
-                ? "nav-link border-start ps-3 pe-3 active fw-semibold"
-                : "nav-link border-start ps-3 pe-3"
-            }
-            onClick={() => {
-              setSelectedIndex(index);
-            }}
+    <aside className="card bg-dark text-light border-secondary shadow-sm sticky-top">
+      <div className="card-body">
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <p className="h4 mb-0">Filters</p>
+          <button
+            type="button"
+            className="btn btn-outline-light btn-sm"
+            onClick={onResetFilters}
           >
-            <input
-              className="form-check-input me-2"
-              type="checkbox"
-              value=""
-              aria-label="Checkbox for following text input"
-            />
-            {item}
-          </li>
+            Reset
+          </button>
+        </div>
+
+        {filterGroups.map((group) => (
+          <div className="mb-3" key={group.id}>
+            <label className="form-label fw-semibold" htmlFor={group.id}>
+              {group.label}
+            </label>
+            <select
+              id={group.id}
+              className="form-select"
+              value={group.value}
+              onChange={(event) => onFilterChange(group.id, event.target.value)}
+            >
+              <option value="">All</option>
+              {group.options.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
         ))}
-      </ul>
-    </div>
+
+        <div className="mb-0">
+          <label className="form-label fw-semibold" htmlFor="ranking">
+            Ranking
+          </label>
+          <select
+            id="ranking"
+            className="form-select"
+            value={filters.ranking}
+            onChange={(event) =>
+              onFilterChange("ranking", event.target.value as RankingOption)
+            }
+          >
+            {rankingOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+    </aside>
   );
 }
 

@@ -1,12 +1,20 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGamepad } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
 
-function NavigationPanel() {
+export type NavigationTab = "Games" | "About" | "FAQs";
+
+type NavigationPanelProps = {
+  activeTab: NavigationTab;
+  onTabChange: (tab: NavigationTab) => void;
+};
+
+function NavigationPanel({
+  activeTab,
+  onTabChange,
+}: NavigationPanelProps) {
   const navTitle = " GameLib";
-  let pageDirectory = ["Games", "About", "FAQs"];
+  const pageDirectory: NavigationTab[] = ["Games", "About", "FAQs"];
 
-  const [selectedIndex, setSelectedIndex] = useState(-1);
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary p-0">
       <div className="container-fluid">
@@ -27,16 +35,16 @@ function NavigationPanel() {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            {pageDirectory.map((item, index) => (
+            {pageDirectory.map((item) => (
               <li
                 key={item}
                 className={
-                  selectedIndex === index
+                  activeTab === item
                     ? "nav-link border-start ps-3 pe-3 active fw-semibold"
                     : "nav-link border-start ps-3 pe-3"
                 }
                 onClick={() => {
-                  setSelectedIndex(index);
+                  onTabChange(item);
                 }}
               >
                 {item}

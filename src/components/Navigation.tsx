@@ -8,11 +8,8 @@ type NavigationPanelProps = {
   onTabChange: (tab: NavigationTab) => void;
 };
 
-function NavigationPanel({
-  activeTab,
-  onTabChange,
-}: NavigationPanelProps) {
-  const navTitle = " GameLib";
+function NavigationPanel({ activeTab, onTabChange }: NavigationPanelProps) {
+  const navTitle = " Choi's GameLib";
   const pageDirectory: NavigationTab[] = ["Games", "About", "FAQs"];
 
   return (

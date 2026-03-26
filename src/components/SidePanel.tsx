@@ -57,13 +57,13 @@ function SidePanel({
   ] as const;
 
   return (
-    <aside className="card bg-dark text-light border-secondary shadow-sm sticky-top">
+    <aside className="card border-secondary shadow-sm sticky-top">
       <div className="card-body">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <p className="h4 mb-0">Filters</p>
           <button
             type="button"
-            className="btn btn-outline-light btn-sm"
+            className="btn btn-sm text-secondary"
             onClick={onResetFilters}
           >
             Reset

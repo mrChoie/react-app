@@ -1,12 +1,17 @@
-function NavigationPanel() {
-  const navTitle = "GameLib";
-  let pageDirectory = ["Games", "About", "FAQs"];
-  let selecetedIndex = 0;
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGamepad } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 
+function NavigationPanel() {
+  const navTitle = " GameLib";
+  let pageDirectory = ["Games", "About", "FAQs"];
+
+  const [selectedIndex, setSelectedIndex] = useState(-1);
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary p-0">
       <div className="container-fluid">
-        <span className="navbar-brand pt-2 pb-2 me-3 ms-3 fw-bold">
+        <span className="navbar-brand pt-2 pb-2 me-3 fw-bold">
+          <FontAwesomeIcon icon={faGamepad} />
           {navTitle}
         </span>
         <button
@@ -26,12 +31,12 @@ function NavigationPanel() {
               <li
                 key={item}
                 className={
-                  selecetedIndex === index
+                  selectedIndex === index
                     ? "nav-link border-start ps-3 pe-3 active fw-semibold"
                     : "nav-link border-start ps-3 pe-3"
                 }
                 onClick={() => {
-                  selecetedIndex = index;
+                  setSelectedIndex(index);
                 }}
               >
                 {item}
